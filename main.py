@@ -37,7 +37,7 @@ def predict():
     if model is None:
         load_custom_model()
 
-    file = request.files['file']
+    file = request.files.get('file')
     data = request.get_json()
     url = data["url"]
     try:
