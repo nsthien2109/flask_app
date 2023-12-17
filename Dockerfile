@@ -2,15 +2,6 @@
 # https://hub.docker.com/_/python
 FROM python:3.9-slim
 
-FROM nvidia/cuda:11.0-base
-
-# Install required libraries
-RUN apt-get update && apt-get install -y \
-    libcudnn8=8.*-1+cuda11.0 \
-    libcudnn8-dev=8.*-1+cuda11.0 \
-    && rm -rf /var/lib/apt/lists/*
-
-
 # Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
 
