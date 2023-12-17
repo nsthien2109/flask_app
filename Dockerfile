@@ -2,6 +2,17 @@
 # https://hub.docker.com/_/python
 FROM python:3.9-slim
 
+FROM nvidia/cuda:11.1-base
+
+# Install additional CUDA Toolkit components
+RUN apt-get update && apt-get install -y \
+    cuda-libraries-11-1 \
+    cuda-nvtx-11-1 \
+    cuda-command-line-tools-11-1
+
+# Set LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
 # Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
 
