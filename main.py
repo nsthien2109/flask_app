@@ -15,16 +15,6 @@ def load_custom_model():
     model = load_model("./Mobinet.h5")
 
 
-def prepare_image(url):
-    response = requests.get(url)
-    img = Image.open(BytesIO(response.content))
-    img = img.resize((224, 224))
-    img_array = np.array(img)
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array = img_array / 255.0
-    return img_array
-
-
 @app.route("/")
 def hello_world():
     return "<p>API for prediction bird !</p>"
@@ -37,18 +27,14 @@ def predict():
     if model is None:
         load_custom_model()
 
-    file = request.files.get('file')
-    data = request.get_json()
-    url = data["url"]
-    try:
-        if url:
-            image = prepare_image(url)
-        else :
-            image = Image.open(file)
+    file = request.files['file']
+    image = Image.open(file)
 
-            image = image.resize((224, 224))
-            image = np.expand_dims(image, axis=0)
-            image = image / 255.0
+    image = image.resize((224, 224))
+    image = np.expand_dims(image, axis=0)
+    image = image / 255.0
+    
+    try:
 
         prediction = model.predict(image)
 
@@ -70,4 +56,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port = 5000)
